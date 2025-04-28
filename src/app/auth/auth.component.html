@@ -1,0 +1,86 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md overflow-hidden bg-white rounded-lg shadow-xl">
+    <div class="h-2 bg-indigo-600"></div>
+    <div class="px-8 py-6">
+      <div class="flex justify-center">
+        <div class="w-full">
+          <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <div class="text-center">
+              <h4 class="text-2xl font-bold text-gray-800">{{ isLoginMode ? 'Login' : 'Register' }}</h4>
+            </div>
+            <div *ngIf="!isLoginMode" class="space-y-2">
+              <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+              <input
+                id="email"
+                type="name"
+                formControlName="name"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                [ngClass]="{ 'border-red-500 ring-red-500': authForm.get('name')?.invalid && authForm.get('name')?.touched }"
+              />
+              <div *ngIf="authForm.get('name')?.invalid && authForm.get('name')?.touched" class="text-sm text-red-600">
+                Valid name is required.
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                [ngClass]="{ 'border-red-500 ring-red-500': authForm.get('email')?.invalid && authForm.get('email')?.touched }"
+              />
+              <div *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched" class="text-sm text-red-600">
+                Valid email is required.
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+              <input
+                id="password"
+                type="password"
+                formControlName="password"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                [ngClass]="{ 'border-red-500 ring-red-500': authForm.get('password')?.invalid && authForm.get('password')?.touched }"
+              />
+              <div *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched" class="text-sm text-red-600">
+                Password must be at least 6 characters long.
+              </div>
+            </div>
+            <div *ngIf="!isLoginMode" class="space-y-2">
+              <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+              <select 
+                id="role" 
+                formControlName="role" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              >
+                <option value="" disabled>Select a role</option>
+                <option value="admin">Admin</option>
+                <option value="reporter">Reporter</option>
+              </select>
+              <div *ngIf="authForm.get('role')?.invalid && authForm.get('role')?.touched" class="text-sm text-red-600">
+                Role is required.
+              </div>
+            </div>
+            <button 
+              type="submit" 
+              [disabled]="loading"
+              class="w-full px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-300"
+            >
+              {{ isLoginMode ? 'Login' : 'Register' }}
+            </button>
+            <div class="text-center">
+              <a 
+                (click)="switchMode()" 
+                class="text-sm font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
+              >
+                {{ isLoginMode ? 'Need Account? Register' : 'Have an account? Login' }}
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="h-1 bg-gray-200"></div>
+  </div>
+</div>

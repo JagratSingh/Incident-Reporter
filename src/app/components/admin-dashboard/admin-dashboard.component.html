@@ -1,0 +1,180 @@
+<section class="p-6 bg-gray-50 min-h-screen">
+  <div class="flex justify-between items-center mb-8">
+    <h2 class="text-2xl font-bold text-gray-800">Manage Incidents</h2>
+    <div class="flex space-x-4">
+      <button
+        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+        (click)="incidentsAssigned()"
+      >
+        Incidents Assigned
+      </button>
+      <button
+        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+        (click)="addIncident()"
+      >
+        Add Incident
+      </button>
+      <button
+        class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+        (click)="manageUsers()"
+      >
+        Manage Users
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading">
+    <p class="text-gray-600 italic">Loading incidents...</p>
+  </div>
+
+  <div *ngIf="!loading && incidents.length === 0">
+    <p class="text-gray-600 italic">
+      No incident found. Please add some incidents.
+    </p>
+  </div>
+
+  <div *ngIf="!loading && incidents.length > 0">
+    <!-- Open Incidents -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold mb-4 text-gray-700">Open Incidents</h3>
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        *ngIf="openIncidents.length > 0"
+      >
+        <div
+          *ngFor="let incident of openIncidents"
+          (click)="viewIncidents(incident.id)"
+          class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-red-500"
+        >
+          <div class="mb-4">
+            <h3 class="font-bold text-lg text-gray-800">
+              {{ incident.title | titlecase }}
+            </h3>
+            <p class="text-gray-600">
+              <strong class="text-gray-700">Incident Priority:</strong>
+              {{ incident.priority | titlecase }}
+            </p>
+            <p class="text-gray-600">
+              <strong class="text-gray-700">Assigned To:</strong>
+              {{ getUserById(incident.assignedTo).name }}
+            </p>
+          </div>
+          <div class="flex justify-end space-x-2">
+            <button
+              class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors"
+              (click)="editIncident(incident.id); $event.stopPropagation()"
+            >
+              Edit
+            </button>
+            <button
+              class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+              (click)="deleteIncident(incident); $event.stopPropagation()"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+      <p class="text-gray-600 italic mt-4" *ngIf="openIncidents.length === 0">
+        No open incidents found.
+      </p>
+    </div>
+  </div>
+
+  <!-- In Progress Incidents -->
+  <div class="mb-8">
+    <h3 class="text-xl font-semibold mb-4 text-gray-700">
+      In Progress Incidents
+    </h3>
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      *ngIf="inProgressIncidents.length > 0"
+    >
+      <div
+        *ngFor="let incident of inProgressIncidents"
+        (click)="viewIncidents(incident.id)"
+        class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-yellow-500"
+      >
+        <div class="mb-4">
+          <h3 class="font-bold text-lg text-gray-800">
+            {{ incident.title | titlecase }}
+          </h3>
+          <p class="text-gray-600">
+            <strong class="text-gray-700">Incident Priority:</strong>
+            {{ incident.priority | titlecase }}
+          </p>
+          <p class="text-gray-600">
+            <strong class="text-gray-700">Assigned To:</strong>
+            {{ getUserById(incident.assignedTo).name }}
+          </p>
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button
+            class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors"
+            (click)="editIncident(incident.id); $event.stopPropagation()"
+          >
+            Edit
+          </button>
+          <button
+            class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+            (click)="deleteIncident(incident); $event.stopPropagation()"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    <p
+      class="text-gray-600 italic mt-4"
+      *ngIf="inProgressIncidents.length === 0"
+    >
+      No in-progress incidents found.
+    </p>
+  </div>
+
+  <!-- Resolved Incidents -->
+  <div class="mb-8">
+    <h3 class="text-xl font-semibold mb-4 text-gray-700">Resolved Incidents</h3>
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      *ngIf="resolved.length > 0"
+    >
+      <div
+        *ngFor="let incident of resolved"
+        (click)="viewIncidents(incident.id)"
+        class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-green-500"
+      >
+        <div class="mb-4">
+          <h3 class="font-bold text-lg text-gray-800">
+            {{ incident.title | titlecase }}
+          </h3>
+          <p class="text-gray-600">
+            <strong class="text-gray-700">Incident Priority:</strong>
+            {{ incident.priority | titlecase }}
+          </p>
+          <p class="text-gray-600">
+            <strong class="text-gray-700">Assigned To:</strong>
+            {{ getUserById(incident.assignedTo).name }}
+          </p>
+        </div>
+        <div class="flex justify-end space-x-2">
+          <button
+            class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors"
+            (click)="editIncident(incident.id); $event.stopPropagation()"
+          >
+            Edit
+          </button>
+          <button
+            class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+            (click)="deleteIncident(incident); $event.stopPropagation()"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    <p class="text-gray-600 italic mt-4" *ngIf="resolved.length === 0">
+      No resolved incidents found.
+    </p>
+  </div>
+</section>

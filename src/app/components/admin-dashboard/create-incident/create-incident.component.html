@@ -1,0 +1,294 @@
+<div
+  class="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50"
+>
+  <div
+    class="max-w-2xl w-full px-4 py-8 bg-white rounded-2xl shadow-lg border border-indigo-100"
+  >
+    <div class="relative mb-12">
+      <h1 class="text-3xl font-bold text-center mb-2 text-indigo-800">
+        Add Incident
+      </h1>
+      <div
+        class="absolute left-1/2 transform -translate-x-1/2 h-1 w-24 bg-gradient-to-r from-indigo-400 to-blue-500 rounded-full"
+      ></div>
+    </div>
+
+    <form
+      [formGroup]="addIncidentForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-8"
+    >
+      <!-- Title -->
+      <div class="space-y-2 group">
+        <label
+          for="name"
+          class="block text-sm font-medium text-gray-700 group-hover:text-indigo-700 transition-colors duration-300"
+        >
+          Incident Name
+        </label>
+        <div class="relative">
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            placeholder="Enter Incident Name"
+            [ngClass]="{
+              'border-red-500 ring-red-500':
+                addIncidentForm.get('name')?.invalid &&
+                addIncidentForm.get('name')?.touched
+            }"
+            class="w-full pl-10 pr-3 py-3 border-2 border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-indigo-300 transition-all duration-300"
+          />
+        </div>
+        <div
+          *ngIf="
+            addIncidentForm.get('name')?.hasError('required') &&
+            addIncidentForm.get('name')?.touched
+          "
+          class="text-sm text-red-600 flex items-center space-x-1"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span>Incident Name is required.</span>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="space-y-2 group">
+        <label
+          for="description"
+          class="block text-sm font-medium text-gray-700 group-hover:text-indigo-700 transition-colors duration-100"
+        >
+          Incident Description
+        </label>
+        <div class="relative">
+          <textarea
+            id="description"
+            formControlName="description"
+            placeholder="Enter Incident Description"
+            [ngClass]="{
+              'border-red-500 ring-red-500':
+                addIncidentForm.get('description')?.invalid &&
+                addIncidentForm.get('description')?.touched
+            }"
+            class="w-full pl-10 pr-3 py-3 border-2 border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-indigo-300 transition-all duration-300 min-h-12"
+          ></textarea>
+        </div>
+        <div
+          *ngIf="
+            addIncidentForm.get('description')?.hasError('required') &&
+            addIncidentForm.get('description')?.touched
+          "
+          class="text-sm text-red-600 flex items-center space-x-1"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span>Incident Description is required.</span>
+        </div>
+      </div>
+
+      <!-- Priority -->
+      <div class="space-y-2 group">
+        <label
+          for="priority"
+          class="block text-sm font-medium text-gray-700 group-hover:text-indigo-700 transition-colors duration-300"
+        >
+          Priority
+        </label>
+        <div class="relative">
+          <select
+            id="priority"
+            formControlName="priority"
+            placeholder="Select Priority"
+            [ngClass]="{
+              'border-red-500 ring-red-500':
+                addIncidentForm.get('priority')?.invalid &&
+                addIncidentForm.get('priority')?.touched
+            }"
+            class="w-full pl-10 pr-3 py-3 border-2 border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-indigo-300 transition-all duration-300 appearance-none"
+          >
+            <option
+              *ngFor="let priority of priorities"
+              [value]="priority"
+              class="py-2"
+            >
+              {{ priority | titlecase }}
+            </option>
+          </select>
+          <div class="absolute left-3 top-3 text-gray-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3z"
+              />
+            </svg>
+          </div>
+          <div
+            class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none"
+          >
+            <svg
+              class="w-5 h-5 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          *ngIf="
+            addIncidentForm.get('priority')?.hasError('required') &&
+            addIncidentForm.get('priority')?.touched
+          "
+          class="text-sm text-red-600 flex items-center space-x-1"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span>Incident must have a priority</span>
+        </div>
+      </div>
+
+      <!-- Assigned To -->
+      <div class="space-y-2 group">
+        <label
+          for="assignedTo"
+          class="block text-sm font-medium text-gray-700 group-hover:text-indigo-700 transition-colors duration-300"
+        >
+          Assign To
+        </label>
+        <div class="relative">
+          <select
+            id="assignedTo"
+            formControlName="assignedTo"
+            placeholder="Select Assignee"
+            [ngClass]="{
+              'border-red-500 ring-red-500':
+                addIncidentForm.get('assignedTo')?.invalid &&
+                addIncidentForm.get('assignedTo')?.touched
+            }"
+            class="w-full pl-10 pr-3 py-3 border-2 border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent hover:border-indigo-300 transition-all duration-300 appearance-none"
+          >
+            @for(reporter of reporters; track reporter.uid ){
+            <option [value]="reporter.uid" class="py-2">
+              {{ reporter.name }} ({{ reporter.email }})
+            </option>
+            }
+          </select>
+          <div class="absolute left-3 top-3 text-gray-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none"
+          >
+            <svg
+              class="w-5 h-5 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          *ngIf="
+            addIncidentForm.get('assignedTo')?.hasError('required') &&
+            addIncidentForm.get('assignedTo')?.touched
+          "
+          class="text-sm text-red-600 flex items-center space-x-1"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span>Incident should be assigned to a reporter.</span>
+        </div>
+      </div>
+
+      <div class="pt-6">
+        <button
+          type="submit"
+          class="w-full py-3 px-6 text-white font-medium rounded-lg shadow-md transform transition duration-300 ease-in-out hover:scale-102 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+        >
+          <div class="flex items-center justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span>Add Incident</span>
+          </div>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

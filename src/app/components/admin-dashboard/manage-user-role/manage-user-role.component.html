@@ -1,0 +1,48 @@
+<div class="relative mb-12 mt-4">
+  <h1 class="text-3xl font-bold text-center mb-2 text-indigo-800">
+    Manage Users
+  </h1>
+  <div
+    class="absolute left-1/2 transform -translate-x-1/2 h-1 w-24 bg-gradient-to-r from-indigo-400 to-blue-500 rounded-full"
+  ></div>
+</div>
+
+<div>
+  <p>Admins</p>
+  <div *ngFor="let admin of admins" class="user-card">
+    <div class="user-info">
+      <p>
+        {{ admin.name }}
+        <span *ngIf="admin.uid === currentUserId">(You)</span>
+      </p>
+      <p>
+        Email: <span>{{ admin.email }}</span>
+      </p>
+    </div>
+    <div>
+      <button
+        *ngIf="admin.uid !== currentUserId"
+        (click)="handleMakeUser(admin.uid)"
+      >
+        Remove
+      </button>
+    </div>
+  </div>
+</div>
+
+<div>
+  <p>Reporters</p>
+  <div *ngFor="let member of members" class="user-card">
+    <div class="user-info">
+      <p>{{ member.name }}</p>
+      <p>
+        Email: <span>{{ member.email }}</span>
+      </p>
+    </div>
+    <div>
+      <button class="make-admin" (click)="handleMakeAdmin(member.uid)">
+        Make Admin
+      </button>
+    </div>
+  </div>
+</div>
